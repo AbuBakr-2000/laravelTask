@@ -29,4 +29,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function apps()
+    {
+        return $this->hasMany(Application::class);
+    }
 }
