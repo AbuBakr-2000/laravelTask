@@ -80,6 +80,12 @@
                                         {{ session('success') }}
                                     </div>
                                 @endif
+
+                                @if (session('message'))
+                                    <div class="dark:text-red-400">
+                                        {{ session('message') }}
+                                    </div>
+                                @endif
                                 <div class='flex items-center justify-center '>
                                     <div class='w-full max-w-lg px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'>
                                         <div class='max-w-md mx-auto space-y-6'>
