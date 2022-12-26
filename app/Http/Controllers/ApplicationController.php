@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailJob;
+use App\Mail\ApplicationCreated;
 use App\Models\Application;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class ApplicationController extends Controller
 {
-//    public function index()
-//    {
-//        $applications = Application::latest();
-//        return view('dashboard',['applicatons' => $applications]);
-//    }
-
     public function store(Request $request)
     {
         if ($request->hasFile('file')){
@@ -22,7 +20,6 @@ class ApplicationController extends Controller
         };
 
         $validated = $request->validate([
-//           'user_id' => 'required',
             'subject' => 'required|max:255',
             'message' => 'required',
             'file_url' => 'file|mimes:jpg,png,pdf,doc,docx',
@@ -32,9 +29,11 @@ class ApplicationController extends Controller
             'user_id' => auth()->user()->id,
             'subject' => $request->subject,
             'message' => $request->message,
-//            'fileName' => $request->$name,
-            'file_url' => $path ?? null,``
+            'file_url' => $path ?? null,
         ]);
+
+//        ============== queue ===============
+        SendEmailJob::dispatch($application);
 
         return redirect()->back()->with(['success' => 'Has been send!']);
     }
