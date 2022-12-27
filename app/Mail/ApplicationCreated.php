@@ -39,7 +39,7 @@ class ApplicationCreated extends Mailable implements ShouldQueue
 //        return $mail;
 //    }
 
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             from: new Address($this->application->user->email, $this->application->user->name),
@@ -50,7 +50,7 @@ class ApplicationCreated extends Mailable implements ShouldQueue
         );
     }
 
-    public function content()
+    public function content(): Content
     {
         return new Content(
             view: 'emails.app-created',
@@ -60,10 +60,17 @@ class ApplicationCreated extends Mailable implements ShouldQueue
         );
     }
 
-    public function attachments()
+    public function attachments(): array
     {
-        return[
-           Attachment::fromStorageDisk('public', $this->application->file_url),
-        ];
+        if($this->application->file_url == null)
+        {
+            return [];
+        }
+        else{
+            return[
+                Attachment::fromStorageDisk('public', $this->application->file_url),
+            ];
+        }
+
     }
 }

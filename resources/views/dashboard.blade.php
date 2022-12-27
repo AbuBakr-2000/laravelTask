@@ -63,7 +63,26 @@
                                             <div class="m-6 p-6">No file</div>
                                         @endif
                                     </div>
+
                                 </div>
+
+                                @if(!$application->answer()->exists())
+                                    <div class="flex justify-end">
+                                        <a href="{{ route('answer.create',$application->id) }}"
+                                           type="button"
+                                           class="border border-indigo-500 bg-indigo-500 text-white rounded-md px-2 py-2 m-2 transition duration-500 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline"
+                                        >
+                                            Answer to App
+                                        </a>
+                                    </div>
+                                @else
+                                    <hr class="my-3">
+                                    <h4 class="text-2xl font-bold ">Answer to #{{ $application->id }}</h4>
+                                    <div class="flex ">
+                                        {{ $application->answer->body }}
+                                    </div>
+                                @endif
+
                             </div>
 
                             @endforeach
