@@ -9,6 +9,14 @@ use Carbon\Carbon;
 
 class ApplicationController extends Controller
 {
+    public function index()
+    {
+        return view('applications.index')
+            ->with([
+                'applications' => auth()->user()->apps()->latest()->paginate(4),
+            ]);
+    }
+
     public function store(StoreAppsRequest $request)
     {
         if ($this->checkDate())

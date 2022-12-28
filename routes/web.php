@@ -12,8 +12,11 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('/dashboard', [MainController::class,'dashboard'])->name('dashboard');
     Route::get('/', [MainController::class,'main'])->name('main');
 
-    Route::get('/applications/{application}/answer',[AnswerController::class,'create'])->name('answer.create');
-    Route::post('/applications/{application}/answer',[AnswerController::class,'store'])->name('answer.store');
+    Route::group(['middleware' => 'can:answer-app'], function () {
+        Route::get('/applications/{application}/answer', [AnswerController::class, 'create'])->name('answer.create');
+        Route::post('/applications/{application}/answer', [AnswerController::class, 'store'])->name('answer.store');
+
+    });
 
     Route::resource('applications',ApplicationController::class);
 });
